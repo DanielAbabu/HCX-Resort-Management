@@ -21,8 +21,8 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  // While Next.js themes are not fully integrated, we can use this mock implementation
-  const { theme = 'light', setTheme = () => {} } = { theme: 'light', setTheme: () => {} };
+  // Use proper typing for useTheme hook
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -87,9 +87,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
               variant="outline" 
               size="icon" 
               className="rounded-full border-border/50"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
-              {theme === 'dark' ? (
+              {theme === "dark" ? (
                 <Sun className="h-4 w-4" />
               ) : (
                 <Moon className="h-4 w-4" />
