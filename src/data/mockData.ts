@@ -1,7 +1,7 @@
 export type Sentiment = 'positive' | 'neutral' | 'negative';
 export type RequestStatus = 'new' | 'in-progress' | 'resolved' | 'escalated';
 export type RequestType = 'cleaning' | 'complaint' | 'food' | 'maintenance' | 'amenities' | 'other';
-export type FeedbackSource = 'website' | 'chatbot' | 'kiosk' | 'app';
+export type FeedbackSource = 'website';
 
 export interface FeedbackItem {
   id: string;
@@ -42,7 +42,6 @@ export interface SentimentTrend {
   negative: number;
 }
 
-// Generate mock feedback data
 const generateFeedback = (): FeedbackItem[] => {
   const sentiments: Sentiment[] = ['positive', 'neutral', 'negative'];
   const locations = ['Lobby', 'Restaurant', 'Pool', 'Room', 'Gym', 'Spa', null];
@@ -84,7 +83,6 @@ const generateFeedback = (): FeedbackItem[] => {
 
   const feedback: FeedbackItem[] = [];
   
-  // Create more positive than negative feedback
   for (let i = 0; i < 20; i++) {
     const sentimentType: Sentiment = Math.random() < 0.7 
       ? (Math.random() < 0.6 ? 'positive' : 'neutral')
@@ -120,11 +118,9 @@ const generateFeedback = (): FeedbackItem[] => {
     });
   }
 
-  // Sort by timestamp descending (newest first)
   return feedback.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 };
 
-// Generate mock service requests
 const generateServiceRequests = (): ServiceRequest[] => {
   const requestTypes: RequestType[] = ['cleaning', 'complaint', 'food', 'maintenance', 'amenities', 'other'];
   const statuses: RequestStatus[] = ['new', 'in-progress', 'resolved', 'escalated'];
@@ -219,7 +215,6 @@ const generateServiceRequests = (): ServiceRequest[] => {
     timestamp.setHours(timestamp.getHours() - hoursAgo);
     timestamp.setMinutes(timestamp.getMinutes() - minutesAgo);
 
-    // Determine sentiment based on request content
     let sentiment: Sentiment = 'neutral';
     if (type === 'complaint' || description.includes('not working') || description.includes('missing')) {
       sentiment = Math.random() < 0.7 ? 'negative' : 'neutral';
@@ -227,7 +222,6 @@ const generateServiceRequests = (): ServiceRequest[] => {
       sentiment = Math.random() < 0.7 ? 'neutral' : 'positive';
     }
 
-    // Determine priority based on sentiment and request type
     let priority: 'low' | 'medium' | 'high' | 'urgent' = 'medium';
     if (sentiment === 'negative' || type === 'complaint') {
       priority = Math.random() < 0.6 ? 'high' : 'urgent';
@@ -237,7 +231,6 @@ const generateServiceRequests = (): ServiceRequest[] => {
       priority = Math.random() < 0.7 ? 'low' : 'medium';
     }
 
-    // Determine status (weighted to have more new/in-progress than resolved/escalated)
     let status: RequestStatus;
     const statusRand = Math.random();
     if (statusRand < 0.4) {
@@ -264,7 +257,6 @@ const generateServiceRequests = (): ServiceRequest[] => {
     });
   }
 
-  // Sort by priority (urgent first) and then by timestamp (newest first)
   return requests.sort((a, b) => {
     const priorityOrder = { 'urgent': 0, 'high': 1, 'medium': 2, 'low': 3 };
     if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
@@ -274,7 +266,6 @@ const generateServiceRequests = (): ServiceRequest[] => {
   });
 };
 
-// Generate AI suggestions
 const generateAiSuggestions = (): AiSuggestion[] => {
   const suggestions = [
     {
@@ -321,7 +312,6 @@ const generateAiSuggestions = (): AiSuggestion[] => {
 
   const result: AiSuggestion[] = [];
   
-  // Generate one suggestion per day for the past week
   for (let i = 0; i < suggestions.length; i++) {
     const daysAgo = i % suggestions.length;
     const generatedAt = new Date();
@@ -337,20 +327,16 @@ const generateAiSuggestions = (): AiSuggestion[] => {
     });
   }
 
-  // Sort by generatedAt (newest first)
   return result.sort((a, b) => b.generatedAt.getTime() - a.generatedAt.getTime());
 };
 
-// Generate sentiment trend data
 export const generateSentimentTrends = (): SentimentTrend[] => {
   const result: SentimentTrend[] = [];
   
-  // Generate hourly data for the past 24 hours
   for (let i = 23; i >= 0; i--) {
     const hour = new Date().getHours() - i;
     const formattedHour = `${(hour >= 0 ? hour : 24 + hour) % 24}:00`;
     
-    // More positive than negative, with some variation
     const positive = Math.floor(Math.random() * 5) + 3;
     const neutral = Math.floor(Math.random() * 3) + 1;
     const negative = Math.floor(Math.random() * 3);
@@ -366,7 +352,6 @@ export const generateSentimentTrends = (): SentimentTrend[] => {
   return result;
 };
 
-// Export the mock data
 export const mockFeedback = generateFeedback();
 export const mockServiceRequests = generateServiceRequests();
 export const mockAiSuggestions = generateAiSuggestions();

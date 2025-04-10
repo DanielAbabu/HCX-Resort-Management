@@ -5,6 +5,7 @@ import {
   ServiceRequest, 
   AiSuggestion,
   SentimentTrend,
+  FeedbackSource,
   mockFeedback as initialFeedback,
   mockServiceRequests as initialServiceRequests,
   mockAiSuggestions as initialAiSuggestions,
@@ -52,8 +53,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Add the source field to the cleaned feedback to maintain type compatibility
   const cleanedFeedback = initialFeedback.map(item => ({
     ...item,
-    // Set a default source of 'website' for all feedback items
-    source: 'website' 
+    // Set source to 'website' ensuring it's using the proper type
+    source: 'website' as FeedbackSource 
   }));
 
   const [feedback, setFeedback] = useState<FeedbackItem[]>(cleanedFeedback);
@@ -165,7 +166,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         guestName: names[Math.floor(Math.random() * names.length)],
         message: messages[Math.floor(Math.random() * messages.length)],
         sentiment: sentiments[Math.floor(Math.random() * sentiments.length)],
-        source: 'website', // Set source to 'website' for all new feedback
+        source: 'website' as FeedbackSource, // Use proper typing
         location: Math.random() > 0.5 ? 'Website' : undefined
       };
       
