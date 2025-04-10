@@ -49,11 +49,12 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Clean up the sources in feedback data
-  const cleanedFeedback = initialFeedback.map(item => {
-    const { source, ...rest } = item;
-    return rest;
-  });
+  // Add the source field to the cleaned feedback to maintain type compatibility
+  const cleanedFeedback = initialFeedback.map(item => ({
+    ...item,
+    // Set a default source of 'website' for all feedback items
+    source: 'website' 
+  }));
 
   const [feedback, setFeedback] = useState<FeedbackItem[]>(cleanedFeedback);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>(initialServiceRequests);
@@ -158,16 +159,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         "The pool area could use more towels."
       ];
       
-      const newFeedback: Partial<FeedbackItem> = {
+      const newFeedback: FeedbackItem = {
         id: `fb-${Date.now()}`,
         timestamp: new Date(),
         guestName: names[Math.floor(Math.random() * names.length)],
         message: messages[Math.floor(Math.random() * messages.length)],
         sentiment: sentiments[Math.floor(Math.random() * sentiments.length)],
-        // source property removed
+        source: 'website', // Set source to 'website' for all new feedback
+        location: Math.random() > 0.5 ? 'Website' : undefined
       };
       
-      setFeedback(prev => [newFeedback as FeedbackItem, ...prev].slice(0, 30)); // Keep only 30 most recent
+      setFeedback(prev => [newFeedback, ...prev].slice(0, 30)); // Keep only 30 most recent
       
       // Also update sentiment trends
       setSentimentTrends(prev => {

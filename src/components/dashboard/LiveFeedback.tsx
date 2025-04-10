@@ -27,14 +27,20 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
     negative: 'bg-red-50 text-red-700 border-red-200'
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name: string): string => {
+    // Safely handle undefined or empty names
+    if (!name || name.trim() === '') return 'AN';
     if (name === 'Anonymous') return 'AN';
-    return name
-      .split(' ')
-      .map(part => part[0])
+    
+    // Split the name and safely get initials
+    const nameParts = name.split(' ').filter(Boolean);
+    if (nameParts.length === 0) return 'AN';
+    
+    return nameParts
+      .map(part => part && part[0] ? part[0].toUpperCase() : '')
+      .filter(Boolean)
       .join('')
-      .toUpperCase()
-      .slice(0, 2);
+      .slice(0, 2) || 'AN';
   };
 
   return (
@@ -69,7 +75,7 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
           <p className="text-sm text-muted-foreground mb-2">{feedback.message}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Badge variant="secondary" className="text-xs bg-secondary/70">
-              {feedback.source.toUpperCase()}
+              WEBSITE
             </Badge>
             {feedback.location && (
               <Badge variant="outline" className="text-xs">
