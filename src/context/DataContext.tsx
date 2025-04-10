@@ -49,7 +49,13 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [feedback, setFeedback] = useState<FeedbackItem[]>(initialFeedback);
+  // Clean up the sources in feedback data
+  const cleanedFeedback = initialFeedback.map(item => {
+    const { source, ...rest } = item;
+    return rest;
+  });
+
+  const [feedback, setFeedback] = useState<FeedbackItem[]>(cleanedFeedback);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>(initialServiceRequests);
   const [aiSuggestions, setAiSuggestions] = useState<AiSuggestion[]>(initialAiSuggestions);
   const [sentimentTrends, setSentimentTrends] = useState<SentimentTrend[]>(initialSentimentTrends);
@@ -60,7 +66,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return serviceRequests.filter(request => request.assignedTo === staffName).length;
   };
 
-  // Mock API function for adding staff member
+  // Add staff member
   const addStaffMember = (staff: StaffMember) => {
     // In a real app, this would be an API call
     setStaffMembers(prev => [...prev, staff]);
@@ -89,7 +95,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 300);
   };
 
-  // Mock API function for updating request status
+  // Update request status
   const updateRequestStatus = (id: string, status: 'new' | 'in-progress' | 'resolved' | 'escalated') => {
     // In a real app, this would be an API call
     setTimeout(() => {
@@ -105,7 +111,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 300);
   };
 
-  // Mock API function for assigning request to staff
+  // Assign request to staff
   const assignRequestToStaff = (requestId: string, staffId: string) => {
     // In a real app, this would be an API call
     const staff = staffMembers.find(s => s.id === staffId);
@@ -124,7 +130,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 300);
   };
 
-  // Mock API function for refreshing AI suggestions
+  // Refresh AI suggestions
   const refreshAiSuggestions = () => {
     // In a real app, this would be an API call
     toast.promise(
@@ -141,7 +147,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Add a new feedback item every 30 seconds
     const feedbackInterval = setInterval(() => {
-      const sources = ['chatbot', 'kiosk', 'app'] as const;
       const sentiments = ['positive', 'neutral', 'negative'] as const;
       const names = ["John Smith", "Maria Garcia", "Wei Chen", "Anonymous"];
       
@@ -153,16 +158,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         "The pool area could use more towels."
       ];
       
-      const newFeedback: FeedbackItem = {
+      const newFeedback: Partial<FeedbackItem> = {
         id: `fb-${Date.now()}`,
         timestamp: new Date(),
         guestName: names[Math.floor(Math.random() * names.length)],
         message: messages[Math.floor(Math.random() * messages.length)],
         sentiment: sentiments[Math.floor(Math.random() * sentiments.length)],
-        source: sources[Math.floor(Math.random() * sources.length)]
+        // source property removed
       };
       
-      setFeedback(prev => [newFeedback, ...prev].slice(0, 30)); // Keep only 30 most recent
+      setFeedback(prev => [newFeedback as FeedbackItem, ...prev].slice(0, 30)); // Keep only 30 most recent
       
       // Also update sentiment trends
       setSentimentTrends(prev => {

@@ -62,11 +62,11 @@ const StaffPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent">
           Staff Management
         </h1>
         <Button 
-          className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+          className="gap-2 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400 hover:from-blue-700 hover:to-blue-600 text-white"
           onClick={() => setDialogOpen(true)}
         >
           <UserPlus className="h-4 w-4" />
@@ -191,9 +191,9 @@ const StaffPage = () => {
 
       {/* Add Staff Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-card border border-blue-100/30 dark:border-blue-900/30">
           <DialogHeader>
-            <DialogTitle>Add New Staff Member</DialogTitle>
+            <DialogTitle className="text-lg font-semibold text-blue-900 dark:text-blue-100">Add New Staff Member</DialogTitle>
             <DialogDescription>
               Fill in the details below to add a new staff member to the system.
             </DialogDescription>
@@ -206,6 +206,7 @@ const StaffPage = () => {
                 value={newStaff.name}
                 onChange={(e) => setNewStaff({...newStaff, name: e.target.value})}
                 placeholder="John Smith"
+                className="border-blue-100/50 dark:border-blue-900/50"
               />
             </div>
             <div className="grid gap-2">
@@ -215,6 +216,7 @@ const StaffPage = () => {
                 value={newStaff.role}
                 onChange={(e) => setNewStaff({...newStaff, role: e.target.value})}
                 placeholder="Concierge"
+                className="border-blue-100/50 dark:border-blue-900/50"
               />
             </div>
             <div className="grid gap-2">
@@ -223,10 +225,10 @@ const StaffPage = () => {
                 value={newStaff.department}
                 onValueChange={(value) => setNewStaff({...newStaff, department: value})}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-blue-100/50 dark:border-blue-900/50">
                   <SelectValue placeholder="Select a department" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-card border border-blue-100/30 dark:border-blue-900/30">
                   <SelectItem value="Front Desk">Front Desk</SelectItem>
                   <SelectItem value="Housekeeping">Housekeeping</SelectItem>
                   <SelectItem value="Facilities">Facilities</SelectItem>
@@ -238,7 +240,12 @@ const StaffPage = () => {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddStaff}>Add Staff Member</Button>
+            <Button 
+              onClick={handleAddStaff}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Add Staff Member
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -261,22 +268,24 @@ const StaffCard = ({ staff }: StaffCardProps) => {
   const assignedRequests = getAssignedRequestsCount(staff.name);
 
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-border/50 bg-gradient-to-br from-card to-background">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-blue-100/30 dark:border-blue-900/30 card-gradient">
       <CardContent className="p-0">
-        <div className="bg-primary/5 p-6 flex items-center gap-4">
-          <Avatar className="h-16 w-16 border-2 border-primary/20">
+        <div className="bg-gradient-to-br from-blue-50/70 to-blue-100/30 dark:from-blue-900/30 dark:to-blue-800/20 p-6 flex items-center gap-4">
+          <Avatar className="h-16 w-16 border-2 border-blue-200/40 dark:border-blue-700/40">
             <AvatarImage src={staff.avatar || "/placeholder.svg"} />
-            <AvatarFallback className="text-lg bg-gradient-to-br from-primary/20 to-primary/10">
+            <AvatarFallback className="text-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/40 text-blue-800 dark:text-blue-300">
               {staff.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="font-semibold text-lg">{staff.name}</h3>
+            <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">{staff.name}</h3>
             <p className="text-muted-foreground text-sm">{staff.role}</p>
             <div className="flex flex-wrap items-center gap-2 mt-1">
-              <Badge variant="outline" className="bg-background/50">{staff.department}</Badge>
+              <Badge variant="outline" className="bg-background/50 dark:bg-background/20 border-blue-100/50 dark:border-blue-900/50">
+                {staff.department}
+              </Badge>
               {assignedRequests > 0 && (
-                <Badge variant="secondary" className="gap-1 bg-secondary/70">
+                <Badge variant="secondary" className="gap-1 bg-blue-100/50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                   {assignedRequests} assigned tasks
                 </Badge>
               )}

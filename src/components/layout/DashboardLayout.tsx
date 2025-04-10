@@ -25,15 +25,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background font-inter">
       {/* Sidebar */}
       <aside className="hidden md:flex w-64 flex-col border-r bg-card/50 backdrop-blur-sm">
         <div className="p-6">
           <div className="flex items-center gap-2">
-            <div className="rounded-md bg-primary/90 p-1">
+            <div className="rounded-md bg-primary/90 p-1.5">
               <span className="block h-6 w-6 text-primary-foreground font-bold text-center">SS</span>
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">SmartServe</span>
+            <span className="font-bold text-xl bg-gradient-to-r from-primary via-blue-500 to-blue-400 bg-clip-text text-transparent">SmartServe</span>
           </div>
         </div>
         <div className="flex-1 overflow-auto py-2">
@@ -105,7 +105,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 bg-card/90 backdrop-blur-sm border border-border">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
