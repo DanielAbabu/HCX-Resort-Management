@@ -31,7 +31,6 @@ import {
   HelpCircle,
   CheckSquare
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { useData } from '@/context/DataContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -93,13 +92,13 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
   const isResolved = request.status === 'resolved';
 
   const getInitials = (name: string) => {
+    if (!name) return 'AN';
     if (name === 'Anonymous') return 'AN';
     return name
       .split(' ')
-      .map(part => part[0])
+      .map(part => part && part[0] ? part[0].toUpperCase() : '')
       .join('')
-      .toUpperCase()
-      .slice(0, 2);
+      .slice(0, 2) || 'AN';
   };
 
   return (

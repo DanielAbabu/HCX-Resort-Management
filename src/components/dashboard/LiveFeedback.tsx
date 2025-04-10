@@ -74,9 +74,6 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
           </div>
           <p className="text-sm text-muted-foreground mb-2">{feedback.message}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Badge variant="secondary" className="text-xs bg-secondary/70">
-              WEBSITE
-            </Badge>
             {feedback.location && (
               <Badge variant="outline" className="text-xs">
                 {feedback.location}
