@@ -1,24 +1,30 @@
 
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UserRoundCog, Search, Users, UserCheck, UserPlus, ListFilter } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Users, Search, UserPlus, ListFilter } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import { StaffMember } from '@/context/DataContext';
 
 const StaffPage = () => {
-  const { staffMembers, serviceRequests } = useData();
+  const { staffMembers, addStaffMember } = useData();
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Get assigned requests for each staff member
-  const getAssignedRequestsCount = (staffName: string) => {
-    return serviceRequests.filter(request => request.assignedTo === staffName).length;
-  };
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newStaff, setNewStaff] = useState<Partial<StaffMember>>({
+    name: '',
+    role: '',
+    department: 'Front Desk'
+  });
   
   // Filter staff based on search query
   const filteredStaff = staffMembers.filter(staff => 
@@ -27,22 +33,58 @@ const StaffPage = () => {
     staff.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleAddStaff = () => {
+    if (!newStaff.name || !newStaff.role) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+    
+    addStaffMember({
+      id: `staff-${Date.now()}`,
+      name: newStaff.name,
+      role: newStaff.role,
+      department: newStaff.department || 'Front Desk'
+    });
+    
+    setDialogOpen(false);
+    setNewStaff({
+      name: '',
+      role: '',
+      department: 'Front Desk'
+    });
+  };
+
   return (
     <DashboardLayout>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">Staff Management</h1>
-        <Button className="gap-2">
+      <motion.div 
+        className="flex items-center justify-between mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Staff Management
+        </h1>
+        <Button 
+          className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+          onClick={() => setDialogOpen(true)}
+        >
           <UserPlus className="h-4 w-4" />
           Add Staff Member
         </Button>
-      </div>
+      </motion.div>
       
-      <div className="flex items-center space-x-2 mb-6">
+      <motion.div 
+        className="flex items-center space-x-2 mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Search staff by name, role or department..." 
-            className="pl-8"
+            className="pl-8 border-border/50 bg-background/50 focus-visible:ring-primary/50"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -50,14 +92,14 @@ const StaffPage = () => {
         <Button variant="outline" size="icon" className="shrink-0">
           <ListFilter className="h-4 w-4" />
         </Button>
-      </div>
+      </motion.div>
 
       <Tabs defaultValue="all">
         <TabsList className="mb-4">
           <TabsTrigger value="all">All Staff</TabsTrigger>
           <TabsTrigger value="front-desk">Front Desk</TabsTrigger>
           <TabsTrigger value="housekeeping">Housekeeping</TabsTrigger>
-          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+          <TabsTrigger value="maintenance">Facilities</TabsTrigger>
           <TabsTrigger value="food">Food & Beverage</TabsTrigger>
         </TabsList>
 
@@ -70,10 +112,7 @@ const StaffPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                <StaffCard 
-                  staff={staff} 
-                  assignedRequests={getAssignedRequestsCount(staff.name)} 
-                />
+                <StaffCard staff={staff} />
               </motion.div>
             ))}
           </div>
@@ -91,10 +130,7 @@ const StaffPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <StaffCard 
-                    staff={staff} 
-                    assignedRequests={getAssignedRequestsCount(staff.name)} 
-                  />
+                  <StaffCard staff={staff} />
                 </motion.div>
               ))}
           </div>
@@ -112,10 +148,7 @@ const StaffPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <StaffCard 
-                    staff={staff} 
-                    assignedRequests={getAssignedRequestsCount(staff.name)} 
-                  />
+                  <StaffCard staff={staff} />
                 </motion.div>
               ))}
           </div>
@@ -132,10 +165,7 @@ const StaffPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <StaffCard 
-                    staff={staff} 
-                    assignedRequests={getAssignedRequestsCount(staff.name)} 
-                  />
+                  <StaffCard staff={staff} />
                 </motion.div>
               ))}
           </div>
@@ -152,15 +182,66 @@ const StaffPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <StaffCard 
-                    staff={staff} 
-                    assignedRequests={getAssignedRequestsCount(staff.name)} 
-                  />
+                  <StaffCard staff={staff} />
                 </motion.div>
               ))}
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Add Staff Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add New Staff Member</DialogTitle>
+            <DialogDescription>
+              Fill in the details below to add a new staff member to the system.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input 
+                id="name" 
+                value={newStaff.name}
+                onChange={(e) => setNewStaff({...newStaff, name: e.target.value})}
+                placeholder="John Smith"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="role">Role</Label>
+              <Input 
+                id="role" 
+                value={newStaff.role}
+                onChange={(e) => setNewStaff({...newStaff, role: e.target.value})}
+                placeholder="Concierge"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="department">Department</Label>
+              <Select 
+                value={newStaff.department}
+                onValueChange={(value) => setNewStaff({...newStaff, department: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a department" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Front Desk">Front Desk</SelectItem>
+                  <SelectItem value="Housekeeping">Housekeeping</SelectItem>
+                  <SelectItem value="Facilities">Facilities</SelectItem>
+                  <SelectItem value="Food & Beverage">Food & Beverage</SelectItem>
+                  <SelectItem value="Management">Management</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleAddStaff}>Add Staff Member</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };
@@ -173,42 +254,34 @@ interface StaffCardProps {
     department: string;
     avatar?: string;
   };
-  assignedRequests: number;
 }
 
-const StaffCard = ({ staff, assignedRequests }: StaffCardProps) => {
+const StaffCard = ({ staff }: StaffCardProps) => {
+  const { getAssignedRequestsCount } = useData();
+  const assignedRequests = getAssignedRequestsCount(staff.name);
+
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-border/50 bg-gradient-to-br from-card to-background">
       <CardContent className="p-0">
         <div className="bg-primary/5 p-6 flex items-center gap-4">
           <Avatar className="h-16 w-16 border-2 border-primary/20">
             <AvatarImage src={staff.avatar || "/placeholder.svg"} />
-            <AvatarFallback className="text-lg">{staff.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+            <AvatarFallback className="text-lg bg-gradient-to-br from-primary/20 to-primary/10">
+              {staff.name.split(' ').map(n => n[0]).join('')}
+            </AvatarFallback>
           </Avatar>
           <div>
             <h3 className="font-semibold text-lg">{staff.name}</h3>
             <p className="text-muted-foreground text-sm">{staff.role}</p>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge variant="outline">{staff.department}</Badge>
+            <div className="flex flex-wrap items-center gap-2 mt-1">
+              <Badge variant="outline" className="bg-background/50">{staff.department}</Badge>
               {assignedRequests > 0 && (
-                <Badge variant="secondary" className="gap-1">
-                  <UserCheck className="h-3 w-3" />
-                  {assignedRequests} assigned
+                <Badge variant="secondary" className="gap-1 bg-secondary/70">
+                  {assignedRequests} assigned tasks
                 </Badge>
               )}
             </div>
           </div>
-        </div>
-        
-        <div className="p-4 flex justify-between">
-          <Button variant="outline" size="sm" className="gap-1">
-            <UserCheck className="h-3.5 w-3.5" />
-            Assign Tasks
-          </Button>
-          <Button variant="outline" size="sm" className="gap-1">
-            <UserRoundCog className="h-3.5 w-3.5" />
-            Manage
-          </Button>
         </div>
       </CardContent>
     </Card>

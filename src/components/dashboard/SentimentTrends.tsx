@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Area, AreaChart } from 'recharts';
 import { BarChart3, ArrowUpIcon, ArrowDownIcon, Minus } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import { motion } from 'framer-motion';
@@ -35,20 +35,48 @@ const SentimentTrends: React.FC = () => {
 
   const positiveChange = positivePercentage - yesterdayPositivePercentage;
 
+  // Custom tooltip styles
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip bg-background/95 border border-border p-3 rounded-lg shadow-lg">
+          <p className="font-medium text-sm mb-1">{`${label}`}</p>
+          <div className="flex flex-col gap-1">
+            {payload.map((entry: any, index: number) => (
+              <div key={`item-${index}`} className="flex items-center gap-2">
+                <div 
+                  className="w-3 h-3 rounded-full" 
+                  style={{ backgroundColor: entry.fill }}
+                />
+                <p className="text-xs">
+                  <span className="text-muted-foreground">{entry.name}: </span>
+                  <span className="font-medium">{entry.value}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="shadow-sm">
+      <Card className="shadow-sm overflow-hidden border-border/50 bg-gradient-to-br from-card to-background">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl font-semibold flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              Sentiment Trends
+              <BarChart3 className="h-5 w-5 text-primary" />
+              <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Sentiment Trends
+              </span>
             </CardTitle>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-card p-2 rounded-full shadow-sm">
               <div className="flex items-center gap-1 text-sm">
                 <span className="font-medium">{positivePercentage}% Positive</span>
                 {positiveChange > 0 ? (
@@ -80,51 +108,149 @@ const SentimentTrends: React.FC = () => {
             
             <TabsContent value="today" className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
+                <AreaChart
                   data={sentimentTrends.slice(-12)}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
-                  <XAxis dataKey="timeLabel" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: "rgba(255, 255, 255, 0.9)", 
-                      border: "1px solid #e0e0e0",
-                      borderRadius: "6px" 
-                    }} 
-                    animationDuration={300}
+                  <defs>
+                    <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#4ade80" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#4ade80" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="colorNeutral" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
+                  <XAxis 
+                    dataKey="timeLabel" 
+                    tick={{ fontSize: 12 }} 
+                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }}
+                    tickLine={false}
                   />
-                  <Legend />
-                  <Bar dataKey="positive" stackId="sentiment" name="Positive" fill="#4ade80" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                  <Bar dataKey="neutral" stackId="sentiment" name="Neutral" fill="#60a5fa" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                  <Bar dataKey="negative" stackId="sentiment" name="Negative" fill="#f87171" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                </BarChart>
+                  <YAxis 
+                    tick={{ fontSize: 12 }} 
+                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }}
+                    tickLine={false}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend 
+                    iconType="circle" 
+                    wrapperStyle={{ 
+                      paddingTop: 10, 
+                      fontSize: 12 
+                    }} 
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="positive" 
+                    name="Positive" 
+                    strokeWidth={2}
+                    stroke="#4ade80" 
+                    fillOpacity={1}
+                    fill="url(#colorPositive)" 
+                    animationDuration={1000}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="neutral" 
+                    name="Neutral" 
+                    strokeWidth={2}
+                    stroke="#60a5fa" 
+                    fillOpacity={1}
+                    fill="url(#colorNeutral)" 
+                    animationDuration={1200}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="negative" 
+                    name="Negative" 
+                    strokeWidth={2} 
+                    stroke="#f87171" 
+                    fillOpacity={1}
+                    fill="url(#colorNegative)" 
+                    animationDuration={1400}
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </TabsContent>
             
             <TabsContent value="week" className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
+                <AreaChart
                   data={sentimentTrends}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
-                  <XAxis dataKey="timeLabel" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: "rgba(255, 255, 255, 0.9)", 
-                      border: "1px solid #e0e0e0",
-                      borderRadius: "6px" 
-                    }} 
-                    animationDuration={300}
+                  <defs>
+                    <linearGradient id="colorPositiveWeek" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#4ade80" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#4ade80" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="colorNeutralWeek" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="colorNegativeWeek" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
+                  <XAxis 
+                    dataKey="timeLabel" 
+                    tick={{ fontSize: 12 }} 
+                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }} 
+                    tickLine={false}
                   />
-                  <Legend />
-                  <Bar dataKey="positive" stackId="sentiment" name="Positive" fill="#4ade80" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                  <Bar dataKey="neutral" stackId="sentiment" name="Neutral" fill="#60a5fa" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                  <Bar dataKey="negative" stackId="sentiment" name="Negative" fill="#f87171" radius={[2, 2, 0, 0]} animationDuration={1000} />
-                </BarChart>
+                  <YAxis 
+                    tick={{ fontSize: 12 }} 
+                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }} 
+                    tickLine={false} 
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend 
+                    iconType="circle" 
+                    wrapperStyle={{ 
+                      paddingTop: 10, 
+                      fontSize: 12 
+                    }} 
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="positive" 
+                    name="Positive" 
+                    strokeWidth={2}
+                    stroke="#4ade80" 
+                    fillOpacity={1}
+                    fill="url(#colorPositiveWeek)" 
+                    animationDuration={1000}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="neutral" 
+                    name="Neutral" 
+                    strokeWidth={2}
+                    stroke="#60a5fa" 
+                    fillOpacity={1}
+                    fill="url(#colorNeutralWeek)" 
+                    animationDuration={1200}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="negative" 
+                    name="Negative" 
+                    strokeWidth={2}
+                    stroke="#f87171" 
+                    fillOpacity={1}
+                    fill="url(#colorNegativeWeek)" 
+                    animationDuration={1400}
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </TabsContent>
           </Tabs>

@@ -14,7 +14,9 @@ const FeedbackPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-3xl font-bold tracking-tight">Live Feedback</h1>
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Live Guest Feedback
+        </h1>
       </motion.div>
 
       <div className="grid grid-cols-1 gap-6">

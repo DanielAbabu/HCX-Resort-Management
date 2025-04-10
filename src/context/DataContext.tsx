@@ -21,7 +21,7 @@ export interface StaffMember {
   avatar?: string;
 }
 
-const staffMembers: StaffMember[] = [
+const initialStaffMembers: StaffMember[] = [
   { id: 'staff-1', name: 'Alex Morgan', role: 'Concierge', department: 'Front Desk' },
   { id: 'staff-2', name: 'Taylor Swift', role: 'Housekeeper', department: 'Housekeeping' },
   { id: 'staff-3', name: 'Jordan Chen', role: 'Maintenance', department: 'Facilities' },
@@ -42,6 +42,8 @@ interface DataContextType {
   updateRequestStatus: (id: string, status: 'new' | 'in-progress' | 'resolved' | 'escalated') => void;
   assignRequestToStaff: (requestId: string, staffId: string) => void;
   refreshAiSuggestions: () => void;
+  addStaffMember: (staff: StaffMember) => void;
+  getAssignedRequestsCount: (staffName: string) => number;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -51,6 +53,22 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>(initialServiceRequests);
   const [aiSuggestions, setAiSuggestions] = useState<AiSuggestion[]>(initialAiSuggestions);
   const [sentimentTrends, setSentimentTrends] = useState<SentimentTrend[]>(initialSentimentTrends);
+  const [staffMembers, setStaffMembers] = useState<StaffMember[]>(initialStaffMembers);
+
+  // Get assigned requests for each staff member
+  const getAssignedRequestsCount = (staffName: string) => {
+    return serviceRequests.filter(request => request.assignedTo === staffName).length;
+  };
+
+  // Mock API function for adding staff member
+  const addStaffMember = (staff: StaffMember) => {
+    // In a real app, this would be an API call
+    setStaffMembers(prev => [...prev, staff]);
+    
+    toast.success("Staff member added", {
+      description: `${staff.name} has been added as ${staff.role} in ${staff.department}.`
+    });
+  };
 
   // Mock API function for suggestion feedback
   const markSuggestionHelpful = (id: string) => {
@@ -182,7 +200,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         markSuggestionUnhelpful,
         updateRequestStatus,
         assignRequestToStaff,
-        refreshAiSuggestions
+        refreshAiSuggestions,
+        addStaffMember,
+        getAssignedRequestsCount
       }}
     >
       {children}

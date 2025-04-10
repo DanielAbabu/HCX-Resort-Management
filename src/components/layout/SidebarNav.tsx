@@ -3,14 +3,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
-  BarChart3, 
   Home, 
-  ClipboardList, 
   MessageSquare, 
+  ClipboardList, 
   Lightbulb, 
-  Settings, 
-  Users, 
-  Calendar
+  Users
 } from 'lucide-react';
 
 interface SidebarItemProps {
@@ -50,11 +47,8 @@ const SidebarNav: React.FC = () => {
     { title: 'Dashboard', href: '/', icon: Home },
     { title: 'Live Feedback', href: '/feedback', icon: MessageSquare },
     { title: 'Service Requests', href: '/requests', icon: ClipboardList },
-    { title: 'Analytics', href: '/analytics', icon: BarChart3 },
     { title: 'AI Insights', href: '/insights', icon: Lightbulb },
     { title: 'Staff', href: '/staff', icon: Users },
-    { title: 'Schedule', href: '/schedule', icon: Calendar },
-    { title: 'Settings', href: '/settings', icon: Settings },
   ];
 
   return (

@@ -39,7 +39,7 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
 
   return (
     <motion.div 
-      className="p-4 border rounded-lg mb-3 bg-card animate-fade-in"
+      className="p-4 border border-border/50 rounded-lg mb-3 bg-gradient-to-br from-card to-background shadow-sm hover:shadow-md transition-all duration-300"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -47,9 +47,9 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
       layout
     >
       <div className="flex items-start gap-3">
-        <Avatar>
+        <Avatar className="border border-border/20">
           <AvatarImage src="/placeholder.svg" alt={feedback.guestName} />
-          <AvatarFallback>{getInitials(feedback.guestName)}</AvatarFallback>
+          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10">{getInitials(feedback.guestName)}</AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
@@ -68,7 +68,7 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
           </div>
           <p className="text-sm text-muted-foreground mb-2">{feedback.message}</p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs bg-secondary/70">
               {feedback.source.toUpperCase()}
             </Badge>
             {feedback.location && (
@@ -99,14 +99,19 @@ const LiveFeedback: React.FC = () => {
   };
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm border-border/50 bg-gradient-to-br from-card to-background">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-semibold flex items-center gap-2">
-            <MessageSquare className="h-5 w-5" />
-            Live Feedback
+            <MessageSquare className="h-5 w-5 text-primary" />
+            <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Live Feedback
+            </span>
           </CardTitle>
-          <Badge variant="outline" className="ml-2">
+          <Badge 
+            variant="outline" 
+            className="ml-2 border-primary/30 bg-primary/5 text-primary animate-pulse"
+          >
             LIVE
           </Badge>
         </div>
@@ -129,7 +134,7 @@ const LiveFeedback: React.FC = () => {
           </TabsList>
           
           <TabsContent value="all" className="mt-0">
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
               <AnimatePresence>
                 {filteredFeedback.map((feedback) => (
                   <FeedbackItemCard key={feedback.id} feedback={feedback} />
@@ -139,7 +144,7 @@ const LiveFeedback: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="positive" className="mt-0">
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
               <AnimatePresence>
                 {filteredFeedback.map((feedback) => (
                   <FeedbackItemCard key={feedback.id} feedback={feedback} />
@@ -149,7 +154,7 @@ const LiveFeedback: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="neutral" className="mt-0">
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
               <AnimatePresence>
                 {filteredFeedback.map((feedback) => (
                   <FeedbackItemCard key={feedback.id} feedback={feedback} />
@@ -159,7 +164,7 @@ const LiveFeedback: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="negative" className="mt-0">
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
               <AnimatePresence>
                 {filteredFeedback.map((feedback) => (
                   <FeedbackItemCard key={feedback.id} feedback={feedback} />

@@ -17,8 +17,10 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Dashboard
+        </h1>
+        <div className="flex items-center gap-2 bg-card p-2 rounded-full shadow-sm">
           <span className="text-sm text-muted-foreground">Hotel Grand Plaza</span>
           <span className="inline-flex h-2 w-2 rounded-full bg-green-500"></span>
         </div>
