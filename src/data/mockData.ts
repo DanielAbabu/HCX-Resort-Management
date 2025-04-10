@@ -2,6 +2,7 @@
 export type Sentiment = 'positive' | 'neutral' | 'negative';
 export type RequestStatus = 'new' | 'in-progress' | 'resolved' | 'escalated';
 export type RequestType = 'cleaning' | 'complaint' | 'food' | 'maintenance' | 'amenities' | 'other';
+export type FeedbackSource = 'chatbot' | 'kiosk' | 'app';
 
 export interface FeedbackItem {
   id: string;
@@ -9,7 +10,7 @@ export interface FeedbackItem {
   guestName: string | 'Anonymous';
   message: string;
   sentiment: Sentiment;
-  source: 'chatbot' | 'kiosk' | 'app';
+  source: FeedbackSource;
   location?: string;
 }
 
@@ -45,7 +46,7 @@ export interface SentimentTrend {
 // Generate mock feedback data
 const generateFeedback = (): FeedbackItem[] => {
   const sentiments: Sentiment[] = ['positive', 'neutral', 'negative'];
-  const sources = ['chatbot', 'kiosk', 'app'];
+  const sources: FeedbackSource[] = ['chatbot', 'kiosk', 'app'];
   const locations = ['Lobby', 'Restaurant', 'Pool', 'Room', 'Gym', 'Spa', null];
   const positiveMessages = [
     "The staff was incredibly helpful and friendly!",

@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { FeedbackItem, mockFeedback } from '@/data/mockData';
+import { FeedbackItem } from '@/data/mockData';
 import { formatDistanceToNow } from 'date-fns';
 import { MessageSquare, MessageCircleHeart, MessageCircleWarning, MessageCircleX } from 'lucide-react';
+import { useData } from '@/context/DataContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface FeedbackItemCardProps {
   feedback: FeedbackItem;
@@ -36,7 +38,14 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg mb-3 bg-card animate-fade-in">
+    <motion.div 
+      className="p-4 border rounded-lg mb-3 bg-card animate-fade-in"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      layout
+    >
       <div className="flex items-start gap-3">
         <Avatar>
           <AvatarImage src="/placeholder.svg" alt={feedback.guestName} />
@@ -70,22 +79,23 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const LiveFeedback: React.FC = () => {
   const [filter, setFilter] = useState('all');
+  const { feedback } = useData();
   
-  const filteredFeedback = mockFeedback.filter(
-    feedback => filter === 'all' || feedback.sentiment === filter
+  const filteredFeedback = feedback.filter(
+    item => filter === 'all' || item.sentiment === filter
   );
 
   const counts = {
-    all: mockFeedback.length,
-    positive: mockFeedback.filter(f => f.sentiment === 'positive').length,
-    neutral: mockFeedback.filter(f => f.sentiment === 'neutral').length,
-    negative: mockFeedback.filter(f => f.sentiment === 'negative').length
+    all: feedback.length,
+    positive: feedback.filter(f => f.sentiment === 'positive').length,
+    neutral: feedback.filter(f => f.sentiment === 'neutral').length,
+    negative: feedback.filter(f => f.sentiment === 'negative').length
   };
 
   return (
@@ -120,33 +130,41 @@ const LiveFeedback: React.FC = () => {
           
           <TabsContent value="all" className="mt-0">
             <div className="max-h-[400px] overflow-y-auto">
-              {filteredFeedback.map((feedback) => (
-                <FeedbackItemCard key={feedback.id} feedback={feedback} />
-              ))}
+              <AnimatePresence>
+                {filteredFeedback.map((feedback) => (
+                  <FeedbackItemCard key={feedback.id} feedback={feedback} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
           
           <TabsContent value="positive" className="mt-0">
             <div className="max-h-[400px] overflow-y-auto">
-              {filteredFeedback.map((feedback) => (
-                <FeedbackItemCard key={feedback.id} feedback={feedback} />
-              ))}
+              <AnimatePresence>
+                {filteredFeedback.map((feedback) => (
+                  <FeedbackItemCard key={feedback.id} feedback={feedback} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
           
           <TabsContent value="neutral" className="mt-0">
             <div className="max-h-[400px] overflow-y-auto">
-              {filteredFeedback.map((feedback) => (
-                <FeedbackItemCard key={feedback.id} feedback={feedback} />
-              ))}
+              <AnimatePresence>
+                {filteredFeedback.map((feedback) => (
+                  <FeedbackItemCard key={feedback.id} feedback={feedback} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
           
           <TabsContent value="negative" className="mt-0">
             <div className="max-h-[400px] overflow-y-auto">
-              {filteredFeedback.map((feedback) => (
-                <FeedbackItemCard key={feedback.id} feedback={feedback} />
-              ))}
+              <AnimatePresence>
+                {filteredFeedback.map((feedback) => (
+                  <FeedbackItemCard key={feedback.id} feedback={feedback} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
         </Tabs>

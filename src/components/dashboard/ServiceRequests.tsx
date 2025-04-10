@@ -11,7 +11,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { ServiceRequest, mockServiceRequests } from '@/data/mockData';
+import { ServiceRequest } from '@/data/mockData';
 import { formatDistanceToNow } from 'date-fns';
 import { 
   ClipboardList, 
@@ -31,13 +31,15 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useData } from '@/context/DataContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface RequestItemCardProps {
   request: ServiceRequest;
 }
 
 const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
-  const { toast } = useToast();
+  const { updateRequestStatus, assignRequestToStaff, staffMembers } = useData();
 
   const statusIcons = {
     'new': <Clock className="h-4 w-4" />,
@@ -54,10 +56,10 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
   };
 
   const statusClasses = {
-    'new': 'status-new',
-    'in-progress': 'status-in-progress',
-    'resolved': 'status-resolved',
-    'escalated': 'status-escalated'
+    'new': 'bg-purple-100 text-purple-700 border-purple-200',
+    'in-progress': 'bg-amber-100 text-amber-700 border-amber-200',
+    'resolved': 'bg-green-100 text-green-700 border-green-200',
+    'escalated': 'bg-red-100 text-red-700 border-red-200'
   };
 
   const sentimentIcons = {
@@ -82,18 +84,8 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
     'urgent': 'bg-red-50 text-red-700 border-red-200'
   };
 
-  const handleStatusChange = (newStatus: 'new' | 'in-progress' | 'resolved' | 'escalated') => {
-    toast({
-      title: "Status updated",
-      description: `Request has been marked as ${newStatus}`,
-    });
-  };
-
-  const handleAssign = () => {
-    toast({
-      title: "Request assigned",
-      description: "Request has been assigned to staff member",
-    });
+  const handleAssign = (staffId: string) => {
+    assignRequestToStaff(request.id, staffId);
   };
 
   const getInitials = (name: string) => {
@@ -107,7 +99,14 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg mb-3 bg-card">
+    <motion.div 
+      className="p-4 border rounded-lg mb-3 bg-card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      layout
+    >
       <div className="flex items-start gap-3">
         <Avatar>
           <AvatarImage src="/placeholder.svg" alt={request.guestName} />
@@ -161,13 +160,20 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <Button 
-                variant="secondary" 
-                size="sm" 
-                onClick={() => handleAssign()}
-              >
-                Assign
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="sm">
+                    Assign
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {staffMembers.map(staff => (
+                    <DropdownMenuItem key={staff.id} onClick={() => handleAssign(staff.id)}>
+                      {staff.name} - {staff.role}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="h-8 w-8">
@@ -175,13 +181,13 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleStatusChange('in-progress')}>
+                  <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'in-progress')}>
                     Mark as In Progress
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleStatusChange('resolved')}>
+                  <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'resolved')}>
                     Mark as Resolved
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleStatusChange('escalated')}>
+                  <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'escalated')}>
                     Escalate
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -190,25 +196,24 @@ const RequestItemCard: React.FC<RequestItemCardProps> = ({ request }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-import { useToast } from "@/hooks/use-toast";
-
 const ServiceRequests: React.FC = () => {
   const [filter, setFilter] = useState('all');
+  const { serviceRequests } = useData();
   
   const filteredRequests = filter === 'all' 
-    ? mockServiceRequests 
-    : mockServiceRequests.filter(req => req.status === filter);
+    ? serviceRequests 
+    : serviceRequests.filter(req => req.status === filter);
 
   const counts = {
-    all: mockServiceRequests.length,
-    new: mockServiceRequests.filter(r => r.status === 'new').length,
-    'in-progress': mockServiceRequests.filter(r => r.status === 'in-progress').length,
-    resolved: mockServiceRequests.filter(r => r.status === 'resolved').length,
-    escalated: mockServiceRequests.filter(r => r.status === 'escalated').length
+    all: serviceRequests.length,
+    new: serviceRequests.filter(r => r.status === 'new').length,
+    'in-progress': serviceRequests.filter(r => r.status === 'in-progress').length,
+    resolved: serviceRequests.filter(r => r.status === 'resolved').length,
+    escalated: serviceRequests.filter(r => r.status === 'escalated').length
   };
 
   return (
@@ -243,41 +248,51 @@ const ServiceRequests: React.FC = () => {
           
           <TabsContent value="all" className="mt-0">
             <div className="max-h-[500px] overflow-y-auto">
-              {filteredRequests.map((request) => (
-                <RequestItemCard key={request.id} request={request} />
-              ))}
+              <AnimatePresence>
+                {filteredRequests.map((request) => (
+                  <RequestItemCard key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
 
           <TabsContent value="new" className="mt-0">
             <div className="max-h-[500px] overflow-y-auto">
-              {filteredRequests.map((request) => (
-                <RequestItemCard key={request.id} request={request} />
-              ))}
+              <AnimatePresence>
+                {filteredRequests.map((request) => (
+                  <RequestItemCard key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
 
           <TabsContent value="in-progress" className="mt-0">
             <div className="max-h-[500px] overflow-y-auto">
-              {filteredRequests.map((request) => (
-                <RequestItemCard key={request.id} request={request} />
-              ))}
+              <AnimatePresence>
+                {filteredRequests.map((request) => (
+                  <RequestItemCard key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
 
           <TabsContent value="resolved" className="mt-0">
             <div className="max-h-[500px] overflow-y-auto">
-              {filteredRequests.map((request) => (
-                <RequestItemCard key={request.id} request={request} />
-              ))}
+              <AnimatePresence>
+                {filteredRequests.map((request) => (
+                  <RequestItemCard key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
 
           <TabsContent value="escalated" className="mt-0">
             <div className="max-h-[500px] overflow-y-auto">
-              {filteredRequests.map((request) => (
-                <RequestItemCard key={request.id} request={request} />
-              ))}
+              <AnimatePresence>
+                {filteredRequests.map((request) => (
+                  <RequestItemCard key={request.id} request={request} />
+                ))}
+              </AnimatePresence>
             </div>
           </TabsContent>
         </Tabs>

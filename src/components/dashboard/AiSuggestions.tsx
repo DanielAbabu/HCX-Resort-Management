@@ -3,8 +3,6 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { mockAiSuggestions } from '@/data/mockData';
-import { formatDistanceToNow } from 'date-fns';
 import { 
   Lightbulb, 
   ThumbsUp, 
@@ -12,19 +10,12 @@ import {
   Sparkles,
   Tag
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { formatDistanceToNow } from 'date-fns';
+import { useData } from '@/context/DataContext';
+import { motion } from 'framer-motion';
 
 const AiSuggestions: React.FC = () => {
-  const { toast } = useToast();
-
-  const handleFeedback = (isHelpful: boolean, suggestion: string) => {
-    toast({
-      title: isHelpful ? "Suggestion marked as helpful" : "Suggestion marked as not helpful",
-      description: isHelpful 
-        ? "Thanks for your feedback! This helps our AI learn." 
-        : "Thanks for your feedback. We'll improve our suggestions.",
-    });
-  };
+  const { aiSuggestions, markSuggestionHelpful, markSuggestionUnhelpful, refreshAiSuggestions } = useData();
 
   const impactColors = {
     low: "bg-blue-50 text-blue-700 border-blue-200",
@@ -33,14 +24,19 @@ const AiSuggestions: React.FC = () => {
   };
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-amber-500" />
             AI Suggestions
           </CardTitle>
-          <Button size="sm" variant="outline" className="gap-1 text-primary">
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="gap-1 text-primary"
+            onClick={refreshAiSuggestions}
+          >
             <Lightbulb className="h-4 w-4" />
             Refresh Insights
           </Button>
@@ -48,10 +44,13 @@ const AiSuggestions: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1">
-          {mockAiSuggestions.map((suggestion) => (
-            <div 
+          {aiSuggestions.map((suggestion, index) => (
+            <motion.div 
               key={suggestion.id} 
               className="p-4 border rounded-lg bg-card relative overflow-hidden"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <div className="absolute top-0 left-0 w-1.5 h-full bg-primary" />
               <div className="pl-2">
@@ -79,7 +78,7 @@ const AiSuggestions: React.FC = () => {
                       variant="ghost" 
                       size="sm" 
                       className="h-8 text-muted-foreground hover:text-green-600 hover:bg-green-50"
-                      onClick={() => handleFeedback(true, suggestion.suggestion)}
+                      onClick={() => markSuggestionHelpful(suggestion.id)}
                     >
                       <ThumbsUp className="h-4 w-4 mr-1" />
                       Helpful
@@ -88,7 +87,7 @@ const AiSuggestions: React.FC = () => {
                       variant="ghost" 
                       size="sm" 
                       className="h-8 text-muted-foreground hover:text-red-600 hover:bg-red-50"
-                      onClick={() => handleFeedback(false, suggestion.suggestion)}
+                      onClick={() => markSuggestionUnhelpful(suggestion.id)}
                     >
                       <ThumbsDown className="h-4 w-4 mr-1" />
                       Not Helpful
@@ -96,7 +95,7 @@ const AiSuggestions: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </CardContent>
