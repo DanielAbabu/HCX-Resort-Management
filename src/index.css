@@ -128,7 +128,9 @@
   .status-escalated {
     @apply bg-red-50 text-red-800 border-red-300 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900;
   }
-  
+}
+
+@layer components {
   /* Card design improvements */
   .card-gradient {
     @apply bg-card border border-black/10 dark:border-white/10 shadow-md;
@@ -138,7 +140,18 @@
     @apply bg-white dark:bg-black border border-black/10 dark:border-white/10;
   }
   
-  /* Animation utilities */
+  /* Task assignment styling */
+  .task-completed {
+    @apply bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border-green-300 dark:border-green-800;
+  }
+  
+  .task-assigned {
+    @apply bg-black/5 dark:bg-white/10 text-black dark:text-white border-black/20 dark:border-white/20;
+  }
+}
+
+/* Animation utilities */
+@layer utilities {
   .fade-in {
     animation: fadeIn 0.5s ease-out forwards;
   }
@@ -152,14 +165,5 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }
-  
-  /* Task assignment styling */
-  .task-completed {
-    @apply bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border-green-300 dark:border-green-800;
-  }
-  
-  .task-assigned {
-    @apply bg-black/5 dark:bg-white/10 text-black dark:text-white border-black/20 dark:border-white/20;
   }
 }

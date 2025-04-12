@@ -129,5 +129,65 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities, matchUtilities, theme }) {
+      // This adds direct support for opacity modifiers like border-black/10
+      const colors = theme('colors');
+      
+      // Create opacified versions of all colors for border, text, and bg
+      const utilities = {};
+      
+      Object.entries(colors).forEach(([colorName, colorValue]) => {
+        if (typeof colorValue === 'object') {
+          Object.entries(colorValue).forEach(([shade, value]) => {
+            if (shade !== 'DEFAULT') {
+              utilities[`.border-${colorName}-${shade}/10`] = { borderColor: `color-mix(in srgb, ${value} 10%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/20`] = { borderColor: `color-mix(in srgb, ${value} 20%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/30`] = { borderColor: `color-mix(in srgb, ${value} 30%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/40`] = { borderColor: `color-mix(in srgb, ${value} 40%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/50`] = { borderColor: `color-mix(in srgb, ${value} 50%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/60`] = { borderColor: `color-mix(in srgb, ${value} 60%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/70`] = { borderColor: `color-mix(in srgb, ${value} 70%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/80`] = { borderColor: `color-mix(in srgb, ${value} 80%, transparent)` };
+              utilities[`.border-${colorName}-${shade}/90`] = { borderColor: `color-mix(in srgb, ${value} 90%, transparent)` };
+              
+              utilities[`.bg-${colorName}-${shade}/5`] = { backgroundColor: `color-mix(in srgb, ${value} 5%, transparent)` };
+              utilities[`.bg-${colorName}-${shade}/10`] = { backgroundColor: `color-mix(in srgb, ${value} 10%, transparent)` };
+              utilities[`.bg-${colorName}-${shade}/20`] = { backgroundColor: `color-mix(in srgb, ${value} 20%, transparent)` };
+              utilities[`.bg-${colorName}-${shade}/30`] = { backgroundColor: `color-mix(in srgb, ${value} 30%, transparent)` };
+              utilities[`.bg-${colorName}-${shade}/40`] = { backgroundColor: `color-mix(in srgb, ${value} 40%, transparent)` };
+              utilities[`.bg-${colorName}-${shade}/50`] = { backgroundColor: `color-mix(in srgb, ${value} 50%, transparent)` };
+            }
+          });
+        } else if (colorName === 'black' || colorName === 'white') {
+          utilities[`.border-${colorName}/5`] = { borderColor: `color-mix(in srgb, ${colorValue} 5%, transparent)` };
+          utilities[`.border-${colorName}/10`] = { borderColor: `color-mix(in srgb, ${colorValue} 10%, transparent)` };
+          utilities[`.border-${colorName}/20`] = { borderColor: `color-mix(in srgb, ${colorValue} 20%, transparent)` };
+          utilities[`.border-${colorName}/30`] = { borderColor: `color-mix(in srgb, ${colorValue} 30%, transparent)` };
+          utilities[`.border-${colorName}/40`] = { borderColor: `color-mix(in srgb, ${colorValue} 40%, transparent)` };
+          utilities[`.border-${colorName}/50`] = { borderColor: `color-mix(in srgb, ${colorValue} 50%, transparent)` };
+          utilities[`.border-${colorName}/60`] = { borderColor: `color-mix(in srgb, ${colorValue} 60%, transparent)` };
+          utilities[`.border-${colorName}/70`] = { borderColor: `color-mix(in srgb, ${colorValue} 70%, transparent)` };
+          utilities[`.border-${colorName}/80`] = { borderColor: `color-mix(in srgb, ${colorValue} 80%, transparent)` };
+          utilities[`.border-${colorName}/90`] = { borderColor: `color-mix(in srgb, ${colorValue} 90%, transparent)` };
+          
+          utilities[`.bg-${colorName}/5`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 5%, transparent)` };
+          utilities[`.bg-${colorName}/10`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 10%, transparent)` };
+          utilities[`.bg-${colorName}/20`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 20%, transparent)` };
+          utilities[`.bg-${colorName}/30`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 30%, transparent)` };
+          utilities[`.bg-${colorName}/40`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 40%, transparent)` };
+          utilities[`.bg-${colorName}/50`] = { backgroundColor: `color-mix(in srgb, ${colorValue} 50%, transparent)` };
+          
+          utilities[`.text-${colorName}/50`] = { color: `color-mix(in srgb, ${colorValue} 50%, transparent)` };
+          utilities[`.text-${colorName}/60`] = { color: `color-mix(in srgb, ${colorValue} 60%, transparent)` };
+          utilities[`.text-${colorName}/70`] = { color: `color-mix(in srgb, ${colorValue} 70%, transparent)` };
+          utilities[`.text-${colorName}/80`] = { color: `color-mix(in srgb, ${colorValue} 80%, transparent)` };
+          utilities[`.text-${colorName}/90`] = { color: `color-mix(in srgb, ${colorValue} 90%, transparent)` };
+        }
+      });
+      
+      addUtilities(utilities);
+    }
+  ],
 } satisfies Config;
