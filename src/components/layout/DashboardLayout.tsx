@@ -16,15 +16,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-white font-poppins">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-black text-white">
+      <aside className="hidden md:flex w-64 flex-col border-r bg-white text-black">
         <div className="p-6">
           <div className="flex items-center gap-2">
-            <div className="rounded-md bg-white p-1.5">
-              <span className="block h-6 w-6 text-black font-bold text-center">
+            <div className="rounded-md bg-black p-1.5">
+              <span className="block h-6 w-6 text-white font-bold text-center">
                 HR
               </span>
             </div>
-            <span className="font-bold text-xl text-white">
+            <span className="font-bold text-xl text-black">
               HCX Resort
             </span>
           </div>
@@ -32,17 +32,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <div className="flex-1 overflow-auto py-2">
           <SidebarNav />
         </div>
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-black/10">
           <div className="flex items-center gap-3">
-            <Avatar className="border border-white/20">
+            <Avatar className="border border-black/20">
               <AvatarImage src="/placeholder.svg" alt="Admin User" />
-              <AvatarFallback className="bg-black text-white">
+              <AvatarFallback className="bg-gray-100 text-black">
                 AU
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-white">Admin User</span>
-              <span className="text-xs text-white/70">
+              <span className="text-sm font-medium text-black">Admin User</span>
+              <span className="text-xs text-black/70">
                 admin@hcxresort.com
               </span>
             </div>

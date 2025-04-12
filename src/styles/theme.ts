@@ -1,3 +1,4 @@
+
 export const colors = {
   // Black and white palette
   monochrome: {
@@ -13,12 +14,18 @@ export const colors = {
     900: '#171717', // Almost black
     1000: '#000000' // Pure black
   },
-  // Status colors (keeping these for functional UI elements)
+  // Status colors (using darker variations)
   status: {
-    success: '#22c55e', // Green
-    warning: '#f59e0b', // Amber
-    error: '#ef4444',   // Red
-    info: '#0ea5e9',    // Blue
+    success: '#15803d', // Darker Green
+    warning: '#b45309', // Darker Amber
+    error: '#b91c1c',   // Darker Red
+    info: '#0369a1',    // Darker Blue
+  },
+  // Sentiment colors
+  sentiment: {
+    positive: '#15803d', // Darker Green
+    neutral: '#0369a1',  // Darker Blue
+    negative: '#b91c1c', // Darker Red
   }
 };
 

@@ -29,8 +29,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       className={cn(
         "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all",
         isActive 
-          ? "bg-white/10 text-white" 
-          : "text-white/70 hover:text-white hover:bg-white/5"
+          ? "bg-black/5 text-black font-semibold" 
+          : "text-black/70 hover:text-black hover:bg-black/5"
       )}
     >
       <Icon className="h-6 w-6" />
