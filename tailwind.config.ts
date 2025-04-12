@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -80,6 +81,7 @@ export default {
           950: '#0a0a0a',
         },
         black: {
+          DEFAULT: '#000000',
           50: '#f2f2f2',
           100: '#e6e6e6', 
           200: '#cccccc',
@@ -130,25 +132,34 @@ export default {
   },
   plugins: [
     require("tailwindcss-animate"),
-    function({ addUtilities }) {
-      const opacityUtilities = {};
+    function({ addUtilities, theme }) {
+      const newUtilities = {};
       
+      // Generate border opacity utilities
       for (let i = 1; i <= 9; i++) {
         const value = i * 10;
-        opacityUtilities[`.border-opacity-${value}`] = { borderOpacity: `${value}%` };
+        newUtilities[`.border-opacity-${value}`] = { 
+          "--tw-border-opacity": `${value}%` 
+        };
       }
       
+      // Generate background opacity utilities
       for (let i = 0; i <= 9; i++) {
         const value = i * 10 + (i === 0 ? 5 : 0);
-        opacityUtilities[`.bg-opacity-${value}`] = { backgroundColor: `rgba(var(--tw-bg-opacity), ${value/100})` };
+        newUtilities[`.bg-opacity-${value}`] = { 
+          "--tw-bg-opacity": `${value/100}` 
+        };
       }
       
+      // Generate text opacity utilities
       for (let i = 5; i <= 9; i++) {
         const value = i * 10;
-        opacityUtilities[`.text-opacity-${value}`] = { color: `rgba(var(--tw-text-opacity), ${value/100})` };
+        newUtilities[`.text-opacity-${value}`] = { 
+          "--tw-text-opacity": `${value/100}` 
+        };
       }
       
-      addUtilities(opacityUtilities);
+      addUtilities(newUtilities);
     }
   ],
 } satisfies Config;
