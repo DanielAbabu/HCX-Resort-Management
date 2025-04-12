@@ -15,6 +15,7 @@ import { useData } from '@/context/DataContext';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { StaffMember } from '@/context/DataContext';
+import { colors } from '@/styles/theme';
 
 const StaffPage = () => {
   const { staffMembers, addStaffMember } = useData();
@@ -62,11 +63,11 @@ const StaffPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight text-black">
           Staff Management
         </h1>
         <Button 
-          className="gap-2 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400 hover:from-blue-700 hover:to-blue-600 text-white"
+          className="gap-2 bg-black hover:bg-black/80 text-white"
           onClick={() => setDialogOpen(true)}
         >
           <UserPlus className="h-4 w-4" />
@@ -84,23 +85,23 @@ const StaffPage = () => {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Search staff by name, role or department..." 
-            className="pl-8 border-border/50 bg-background/50 focus-visible:ring-primary/50"
+            className="pl-8 border-black/20 bg-white focus-visible:ring-black/30"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="outline" size="icon" className="shrink-0">
+        <Button variant="outline" size="icon" className="shrink-0 border-black/20 hover:bg-black/5">
           <ListFilter className="h-4 w-4" />
         </Button>
       </motion.div>
 
       <Tabs defaultValue="all">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Staff</TabsTrigger>
-          <TabsTrigger value="front-desk">Front Desk</TabsTrigger>
-          <TabsTrigger value="housekeeping">Housekeeping</TabsTrigger>
-          <TabsTrigger value="maintenance">Facilities</TabsTrigger>
-          <TabsTrigger value="food">Food & Beverage</TabsTrigger>
+        <TabsList className="mb-4 bg-black/5">
+          <TabsTrigger value="all" className="data-[state=active]:bg-black data-[state=active]:text-white">All Staff</TabsTrigger>
+          <TabsTrigger value="front-desk" className="data-[state=active]:bg-black data-[state=active]:text-white">Front Desk</TabsTrigger>
+          <TabsTrigger value="housekeeping" className="data-[state=active]:bg-black data-[state=active]:text-white">Housekeeping</TabsTrigger>
+          <TabsTrigger value="maintenance" className="data-[state=active]:bg-black data-[state=active]:text-white">Facilities</TabsTrigger>
+          <TabsTrigger value="food" className="data-[state=active]:bg-black data-[state=active]:text-white">Food & Beverage</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="mt-0">
@@ -191,44 +192,44 @@ const StaffPage = () => {
 
       {/* Add Staff Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-card border border-blue-100/30 dark:border-blue-900/30">
+        <DialogContent className="sm:max-w-[425px] bg-white border border-black/20">
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold text-blue-900 dark:text-blue-100">Add New Staff Member</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-lg font-semibold text-black">Add New Staff Member</DialogTitle>
+            <DialogDescription className="text-black/70">
               Fill in the details below to add a new staff member to the system.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-black">Full Name</Label>
               <Input 
                 id="name" 
                 value={newStaff.name}
                 onChange={(e) => setNewStaff({...newStaff, name: e.target.value})}
                 placeholder="John Smith"
-                className="border-blue-100/50 dark:border-blue-900/50"
+                className="border-black/20"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="role" className="text-black">Role</Label>
               <Input 
                 id="role" 
                 value={newStaff.role}
                 onChange={(e) => setNewStaff({...newStaff, role: e.target.value})}
                 placeholder="Concierge"
-                className="border-blue-100/50 dark:border-blue-900/50"
+                className="border-black/20"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="department">Department</Label>
+              <Label htmlFor="department" className="text-black">Department</Label>
               <Select 
                 value={newStaff.department}
                 onValueChange={(value) => setNewStaff({...newStaff, department: value})}
               >
-                <SelectTrigger className="border-blue-100/50 dark:border-blue-900/50">
+                <SelectTrigger className="border-black/20">
                   <SelectValue placeholder="Select a department" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border border-blue-100/30 dark:border-blue-900/30">
+                <SelectContent className="bg-white border border-black/20">
                   <SelectItem value="Front Desk">Front Desk</SelectItem>
                   <SelectItem value="Housekeeping">Housekeeping</SelectItem>
                   <SelectItem value="Facilities">Facilities</SelectItem>
@@ -239,10 +240,10 @@ const StaffPage = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)} className="border-black/20 hover:bg-black/5">Cancel</Button>
             <Button 
               onClick={handleAddStaff}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-black hover:bg-black/80 text-white"
             >
               Add Staff Member
             </Button>
@@ -268,24 +269,24 @@ const StaffCard = ({ staff }: StaffCardProps) => {
   const assignedRequests = getAssignedRequestsCount(staff.name);
 
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-blue-100/30 dark:border-blue-900/30 card-gradient">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-black/10 bg-white">
       <CardContent className="p-0">
-        <div className="bg-gradient-to-br from-blue-50/70 to-blue-100/30 dark:from-blue-900/30 dark:to-blue-800/20 p-6 flex items-center gap-4">
-          <Avatar className="h-16 w-16 border-2 border-blue-200/40 dark:border-blue-700/40">
+        <div className="bg-gradient-to-br from-gray-50 to-white p-6 flex items-center gap-4">
+          <Avatar className="h-16 w-16 border-2 border-black/10">
             <AvatarImage src={staff.avatar || "/placeholder.svg"} />
-            <AvatarFallback className="text-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/40 text-blue-800 dark:text-blue-300">
+            <AvatarFallback className="text-lg bg-black text-white">
               {staff.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">{staff.name}</h3>
-            <p className="text-muted-foreground text-sm">{staff.role}</p>
+            <h3 className="font-semibold text-lg text-black">{staff.name}</h3>
+            <p className="text-black/70 text-sm">{staff.role}</p>
             <div className="flex flex-wrap items-center gap-2 mt-1">
-              <Badge variant="outline" className="bg-background/50 dark:bg-background/20 border-blue-100/50 dark:border-blue-900/50">
+              <Badge variant="outline" className="bg-white border-black/20 text-black">
                 {staff.department}
               </Badge>
               {assignedRequests > 0 && (
-                <Badge variant="secondary" className="gap-1 bg-blue-100/50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                <Badge variant="secondary" className="gap-1 bg-black/5 text-black">
                   {assignedRequests} assigned tasks
                 </Badge>
               )}

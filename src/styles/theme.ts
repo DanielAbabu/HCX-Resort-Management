@@ -1,6 +1,6 @@
 
 export const colors = {
-  // Black and white palette
+  // Black and white palette for staff page
   monochrome: {
     0: '#FFFFFF',   // Pure white
     100: '#F5F5F5', // Off white
@@ -14,6 +14,19 @@ export const colors = {
     900: '#171717', // Almost black
     1000: '#000000' // Pure black
   },
+  // Dark orange theme
+  primary: {
+    50: '#FFEECC',
+    100: '#FFD699',
+    200: '#FFBF66',
+    300: '#FFA833',
+    400: '#FF9100', // Primary orange
+    500: '#E68200', // Darker orange (main theme color)
+    600: '#CC7300',
+    700: '#B36500',
+    800: '#994C00',
+    900: '#803300',
+  },
   // Status colors (using darker variations)
   status: {
     success: '#15803d', // Darker Green
@@ -21,7 +34,7 @@ export const colors = {
     error: '#b91c1c',   // Darker Red
     info: '#0369a1',    // Darker Blue
   },
-  // Sentiment colors
+  // Sentiment colors - distinct colors for the graphs
   sentiment: {
     positive: '#15803d', // Darker Green
     neutral: '#0369a1',  // Darker Blue
@@ -42,6 +55,8 @@ export const shadows = {
 };
 
 export const gradients = {
+  orangeToBlack: 'linear-gradient(to right, #E68200, #171717)',
+  orangeCard: 'linear-gradient(to bottom right, #FF9100, #803300)',
   blackToGray: 'linear-gradient(to right, #000000, #404040)',
   grayCard: 'linear-gradient(to bottom right, #262626, #000000)',
 };

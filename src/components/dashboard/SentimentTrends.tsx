@@ -6,6 +6,7 @@ import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, Cart
 import { BarChart3, ArrowUpIcon, ArrowDownIcon, Minus } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import { motion } from 'framer-motion';
+import { colors } from '@/styles/theme';
 
 const SentimentTrends: React.FC = () => {
   const { sentimentTrends } = useData();
@@ -120,27 +121,27 @@ const SentimentTrends: React.FC = () => {
                 >
                   <defs>
                     <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.positive} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.positive} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutral" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.neutral} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.neutral} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.negative} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.negative} stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
                   <XAxis 
                     dataKey="timeLabel" 
-                    tick={{ fontSize: 12 }} 
+                    tick={{ fontSize: 12, fontWeight: 600 }} 
                     axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }}
                     tickLine={false}
                   />
                   <YAxis 
-                    tick={{ fontSize: 12 }} 
+                    tick={{ fontSize: 12, fontWeight: 600 }} 
                     axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }}
                     tickLine={false}
                   />
@@ -149,7 +150,8 @@ const SentimentTrends: React.FC = () => {
                     iconType="circle" 
                     wrapperStyle={{ 
                       paddingTop: 10, 
-                      fontSize: 12 
+                      fontSize: 12,
+                      fontWeight: 600
                     }} 
                   />
                   <Area 
@@ -157,7 +159,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#000000" 
+                    stroke={colors.sentiment.positive} 
                     fillOpacity={1}
                     fill="url(#colorPositive)" 
                     animationDuration={1000}
@@ -167,7 +169,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#525252" 
+                    stroke={colors.sentiment.neutral} 
                     fillOpacity={1}
                     fill="url(#colorNeutral)" 
                     animationDuration={1200}
@@ -177,7 +179,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2} 
-                    stroke="#ef4444" 
+                    stroke={colors.sentiment.negative} 
                     fillOpacity={1}
                     fill="url(#colorNegative)" 
                     animationDuration={1400}
@@ -194,27 +196,27 @@ const SentimentTrends: React.FC = () => {
                 >
                   <defs>
                     <linearGradient id="colorPositiveWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.positive} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.positive} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutralWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.neutral} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.neutral} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegativeWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.sentiment.negative} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.sentiment.negative} stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
                   <XAxis 
                     dataKey="timeLabel" 
-                    tick={{ fontSize: 12 }} 
+                    tick={{ fontSize: 12, fontWeight: 600 }} 
                     axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }} 
                     tickLine={false}
                   />
                   <YAxis 
-                    tick={{ fontSize: 12 }} 
+                    tick={{ fontSize: 12, fontWeight: 600 }} 
                     axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }} 
                     tickLine={false} 
                   />
@@ -223,7 +225,8 @@ const SentimentTrends: React.FC = () => {
                     iconType="circle" 
                     wrapperStyle={{ 
                       paddingTop: 10, 
-                      fontSize: 12 
+                      fontSize: 12,
+                      fontWeight: 600 
                     }} 
                   />
                   <Area 
@@ -231,7 +234,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#000000" 
+                    stroke={colors.sentiment.positive} 
                     fillOpacity={1}
                     fill="url(#colorPositiveWeek)" 
                     animationDuration={1000}
@@ -241,7 +244,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#525252" 
+                    stroke={colors.sentiment.neutral} 
                     fillOpacity={1}
                     fill="url(#colorNeutralWeek)" 
                     animationDuration={1200}
@@ -251,7 +254,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2}
-                    stroke="#ef4444" 
+                    stroke={colors.sentiment.negative} 
                     fillOpacity={1}
                     fill="url(#colorNegativeWeek)" 
                     animationDuration={1400}
