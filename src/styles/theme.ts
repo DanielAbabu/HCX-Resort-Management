@@ -1,39 +1,24 @@
-
 export const colors = {
-  // Blue palette
-  blue: {
-    50: '#e6f1ff',
-    100: '#cce3ff',
-    200: '#99c7ff',
-    300: '#66abff',
-    400: '#338fff',
-    500: '#0073ff',
-    600: '#005ccc',
-    700: '#004599',
-    800: '#002e66',
-    900: '#001733',
-    950: '#000c1a',
+  // Black and white palette
+  monochrome: {
+    0: '#FFFFFF',   // Pure white
+    100: '#F5F5F5', // Off white
+    200: '#E5E5E5', // Light gray
+    300: '#D4D4D4', // Medium light gray
+    400: '#A3A3A3', // Medium gray
+    500: '#737373', // Gray
+    600: '#525252', // Medium dark gray
+    700: '#404040', // Dark gray
+    800: '#262626', // Very dark gray  
+    900: '#171717', // Almost black
+    1000: '#000000' // Pure black
   },
-  // Supporting colors
-  gray: {
-    50: '#f8fafc',
-    100: '#f1f5f9',
-    200: '#e2e8f0',
-    300: '#cbd5e1',
-    400: '#94a3b8',
-    500: '#64748b',
-    600: '#475569',
-    700: '#334155',
-    800: '#1e293b',
-    900: '#0f172a',
-    950: '#020617',
-  },
-  // Status colors
+  // Status colors (keeping these for functional UI elements)
   status: {
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#3b82f6',
+    success: '#22c55e', // Green
+    warning: '#f59e0b', // Amber
+    error: '#ef4444',   // Red
+    info: '#0ea5e9',    // Blue
   }
 };
 
@@ -50,6 +35,6 @@ export const shadows = {
 };
 
 export const gradients = {
-  blue: 'linear-gradient(to right, #0073ff, #338fff)',
-  blueCard: 'linear-gradient(to bottom right, #004599, #001733)',
+  blackToGray: 'linear-gradient(to right, #000000, #404040)',
+  grayCard: 'linear-gradient(to bottom right, #262626, #000000)',
 };

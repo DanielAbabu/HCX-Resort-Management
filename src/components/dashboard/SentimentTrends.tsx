@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Area, AreaChart } from 'recharts';
@@ -9,9 +9,15 @@ import { motion } from 'framer-motion';
 
 const SentimentTrends: React.FC = () => {
   const { sentimentTrends } = useData();
+  const [trendData, setTrendData] = useState(sentimentTrends);
+
+  // Update trend data when sentimentTrends changes
+  useEffect(() => {
+    setTrendData(sentimentTrends);
+  }, [sentimentTrends]);
 
   // Calculate today's overall sentiment
-  const todayData = sentimentTrends.slice(-12);
+  const todayData = trendData.slice(-12);
   const totalFeedback = todayData.reduce(
     (sum, item) => sum + item.positive + item.neutral + item.negative, 
     0
@@ -24,7 +30,7 @@ const SentimentTrends: React.FC = () => {
   ) : 0;
 
   // Compare with yesterday
-  const yesterdayData = sentimentTrends.slice(0, 12);
+  const yesterdayData = trendData.slice(0, 12);
   const yesterdayTotalFeedback = yesterdayData.reduce(
     (sum, item) => sum + item.positive + item.neutral + item.negative, 
     0
@@ -67,12 +73,12 @@ const SentimentTrends: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="shadow-sm overflow-hidden border-border/50 bg-gradient-to-br from-card to-background">
+      <Card className="shadow-sm overflow-hidden border-border/50">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl font-semibold flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-primary" />
-              <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              <BarChart3 className="h-6 w-6 text-black" />
+              <span className="text-black">
                 Sentiment Trends
               </span>
             </CardTitle>
@@ -80,12 +86,12 @@ const SentimentTrends: React.FC = () => {
               <div className="flex items-center gap-1 text-sm">
                 <span className="font-medium">{positivePercentage}% Positive</span>
                 {positiveChange > 0 ? (
-                  <span className="text-green-500 flex items-center">
+                  <span className="text-green-600 flex items-center">
                     <ArrowUpIcon className="h-4 w-4" />
                     {positiveChange}%
                   </span>
                 ) : positiveChange < 0 ? (
-                  <span className="text-red-500 flex items-center">
+                  <span className="text-red-600 flex items-center">
                     <ArrowDownIcon className="h-4 w-4" />
                     {Math.abs(positiveChange)}%
                   </span>
@@ -109,33 +115,33 @@ const SentimentTrends: React.FC = () => {
             <TabsContent value="today" className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                  data={sentimentTrends.slice(-12)}
+                  data={trendData.slice(-12)}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
                   <defs>
                     <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4ade80" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#4ade80" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutral" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
                   <XAxis 
                     dataKey="timeLabel" 
                     tick={{ fontSize: 12 }} 
-                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }}
+                    axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }}
                     tickLine={false}
                   />
                   <YAxis 
                     tick={{ fontSize: 12 }} 
-                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }}
+                    axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }}
                     tickLine={false}
                   />
                   <Tooltip content={<CustomTooltip />} />
@@ -151,7 +157,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#4ade80" 
+                    stroke="#000000" 
                     fillOpacity={1}
                     fill="url(#colorPositive)" 
                     animationDuration={1000}
@@ -161,7 +167,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#60a5fa" 
+                    stroke="#525252" 
                     fillOpacity={1}
                     fill="url(#colorNeutral)" 
                     animationDuration={1200}
@@ -171,7 +177,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2} 
-                    stroke="#f87171" 
+                    stroke="#ef4444" 
                     fillOpacity={1}
                     fill="url(#colorNegative)" 
                     animationDuration={1400}
@@ -183,33 +189,33 @@ const SentimentTrends: React.FC = () => {
             <TabsContent value="week" className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                  data={sentimentTrends}
+                  data={trendData}
                   margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                 >
                   <defs>
                     <linearGradient id="colorPositiveWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4ade80" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#4ade80" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutralWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegativeWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
                   <XAxis 
                     dataKey="timeLabel" 
                     tick={{ fontSize: 12 }} 
-                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }} 
+                    axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }} 
                     tickLine={false}
                   />
                   <YAxis 
                     tick={{ fontSize: 12 }} 
-                    axisLine={{ stroke: '#e5e7eb', strokeWidth: 0.5 }} 
+                    axisLine={{ stroke: '#e5e5e5', strokeWidth: 0.5 }} 
                     tickLine={false} 
                   />
                   <Tooltip content={<CustomTooltip />} />
@@ -225,7 +231,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#4ade80" 
+                    stroke="#000000" 
                     fillOpacity={1}
                     fill="url(#colorPositiveWeek)" 
                     animationDuration={1000}
@@ -235,7 +241,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#60a5fa" 
+                    stroke="#525252" 
                     fillOpacity={1}
                     fill="url(#colorNeutralWeek)" 
                     animationDuration={1200}
@@ -245,7 +251,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2}
-                    stroke="#f87171" 
+                    stroke="#ef4444" 
                     fillOpacity={1}
                     fill="url(#colorNegativeWeek)" 
                     animationDuration={1400}
