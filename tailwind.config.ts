@@ -68,30 +68,17 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         monochrome: {
-          50: '#fafafa',
-          100: '#f5f5f5',
-          200: '#e5e5e5',
-          300: '#d4d4d4',
-          400: '#a3a3a3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717',
-          950: '#0a0a0a',
-        },
-        black: {
-          DEFAULT: '#000000',
-          50: '#f2f2f2',
-          100: '#e6e6e6', 
-          200: '#cccccc',
-          300: '#b3b3b3',
-          400: '#999999',
-          500: '#000000',
-          600: '#0d0d0d',
-          700: '#1a1a1a',
-          800: '#262626',
-          900: '#333333',
+          50: "#fafafa",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
+          300: "#d4d4d4",
+          400: "#a3a3a3",
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#171717",
+          950: "#0a0a0a",
         },
       },
       borderRadius: {
@@ -130,36 +117,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    function({ addUtilities, theme }) {
-      const newUtilities = {};
-      
-      // Generate border opacity utilities
-      for (let i = 1; i <= 9; i++) {
-        const value = i * 10;
-        newUtilities[`.border-opacity-${value}`] = { 
-          "--tw-border-opacity": `${value}%` 
-        };
-      }
-      
-      // Generate background opacity utilities
-      for (let i = 0; i <= 9; i++) {
-        const value = i * 10 + (i === 0 ? 5 : 0);
-        newUtilities[`.bg-opacity-${value}`] = { 
-          "--tw-bg-opacity": `${value/100}` 
-        };
-      }
-      
-      // Generate text opacity utilities
-      for (let i = 5; i <= 9; i++) {
-        const value = i * 10;
-        newUtilities[`.text-opacity-${value}`] = { 
-          "--tw-text-opacity": `${value/100}` 
-        };
-      }
-      
-      addUtilities(newUtilities);
-    }
-  ],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;

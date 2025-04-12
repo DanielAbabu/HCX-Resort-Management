@@ -14,19 +14,6 @@ export const colors = {
     900: '#171717', // Almost black
     1000: '#000000' // Pure black
   },
-  // Black theme
-  primary: {
-    50: '#f2f2f2',
-    100: '#e6e6e6',
-    200: '#cccccc',
-    300: '#b3b3b3',
-    400: '#999999',
-    500: '#000000', // Main black
-    600: '#0d0d0d',
-    700: '#1a1a1a',
-    800: '#262626',
-    900: '#333333',
-  },
   // Status colors (using darker variations)
   status: {
     success: '#15803d', // Darker Green
@@ -34,7 +21,7 @@ export const colors = {
     error: '#b91c1c',   // Darker Red
     info: '#0369a1',    // Darker Blue
   },
-  // Sentiment colors - distinct darker colors for the graphs
+  // Sentiment colors
   sentiment: {
     positive: '#15803d', // Darker Green
     neutral: '#0369a1',  // Darker Blue
@@ -56,7 +43,5 @@ export const shadows = {
 
 export const gradients = {
   blackToGray: 'linear-gradient(to right, #000000, #404040)',
-  blackCard: 'linear-gradient(to bottom right, #333333, #000000)',
-  grayToBlack: 'linear-gradient(to right, #404040, #000000)',
   grayCard: 'linear-gradient(to bottom right, #262626, #000000)',
 };
