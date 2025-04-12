@@ -133,11 +133,11 @@
 @layer components {
   /* Card design improvements */
   .card-gradient {
-    @apply bg-card border border-black/10 dark:border-white/10 shadow-md;
+    @apply bg-card border border-opacity-10 border-black dark:border-white dark:border-opacity-10 shadow-md;
   }
   
   .glass-effect {
-    @apply bg-white dark:bg-black border border-black/10 dark:border-white/10;
+    @apply bg-white dark:bg-black border border-opacity-10 border-black dark:border-white dark:border-opacity-10;
   }
   
   /* Task assignment styling */
@@ -146,7 +146,7 @@
   }
   
   .task-assigned {
-    @apply bg-black/5 dark:bg-white/10 text-black dark:text-white border-black/20 dark:border-white/20;
+    @apply bg-opacity-5 bg-black dark:bg-white dark:bg-opacity-10 text-black dark:text-white border-opacity-20 border-black dark:border-white dark:border-opacity-20;
   }
 }
 
