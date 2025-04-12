@@ -20,25 +20,26 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { colors } from '@/styles/theme';
 
 const InsightsPage = () => {
   // Mock data for the keyword analysis
   const keywordData = [
-    { name: 'Wi-Fi', value: 32, color: '#38bdf8' },
-    { name: 'Check-in', value: 18, color: '#a78bfa' },
-    { name: 'Breakfast', value: 24, color: '#4ade80' },
-    { name: 'Room Service', value: 14, color: '#fb923c' },
-    { name: 'Cleanliness', value: 22, color: '#f472b6' },
-    { name: 'Noise', value: 12, color: '#f87171' },
+    { name: 'Wi-Fi', value: 32, color: colors.chart.blue },
+    { name: 'Check-in', value: 18, color: colors.chart.purple },
+    { name: 'Breakfast', value: 24, color: colors.chart.green },
+    { name: 'Room Service', value: 14, color: colors.chart.orange },
+    { name: 'Cleanliness', value: 22, color: colors.chart.pink },
+    { name: 'Noise', value: 12, color: colors.chart.teal },
   ];
 
   // Mock data for sentiment by area
   const areaData = [
-    { name: 'Rooms', positive: 65, neutral: 25, negative: 10, color: '#4ade80' },
-    { name: 'Restaurant', positive: 72, neutral: 18, negative: 10, color: '#fb923c' },
-    { name: 'Lobby', positive: 85, neutral: 10, negative: 5, color: '#a78bfa' },
-    { name: 'Pool', positive: 90, neutral: 8, negative: 2, color: '#38bdf8' },
-    { name: 'Gym', positive: 60, neutral: 30, negative: 10, color: '#f472b6' },
+    { name: 'Rooms', positive: 65, neutral: 25, negative: 10, color: colors.chart.green },
+    { name: 'Restaurant', positive: 72, neutral: 18, negative: 10, color: colors.chart.orange },
+    { name: 'Lobby', positive: 85, neutral: 10, negative: 5, color: colors.chart.purple },
+    { name: 'Pool', positive: 90, neutral: 8, negative: 2, color: colors.chart.blue },
+    { name: 'Gym', positive: 60, neutral: 30, negative: 10, color: colors.chart.pink },
   ];
 
   return (
@@ -167,7 +168,8 @@ const InsightsPage = () => {
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                           <motion.div 
-                            className="bg-green-500 h-2.5 rounded-full"
+                            className="h-2.5 rounded-full"
+                            style={{ backgroundColor: area.color }}
                             initial={{ width: 0 }}
                             animate={{ width: `${area.positive}%` }}
                             transition={{ duration: 0.8, delay: index * 0.1 }}
@@ -221,7 +223,7 @@ const InsightsPage = () => {
                   Based on recent feedback about slow check-in processes, we recommend scheduling a staff training session focused on streamlining the check-in process.
                 </p>
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="bg-blue-50 text-blue-700">TRAINING</Badge>
+                  <Badge variant="outline" style={{ backgroundColor: `${colors.chart.blue}20`, color: colors.chart.blue, borderColor: `${colors.chart.blue}40` }}>TRAINING</Badge>
                   <button className="text-sm text-primary font-medium">
                     Schedule Now
                   </button>
@@ -239,7 +241,7 @@ const InsightsPage = () => {
                   Multiple guests have reported weak Wi-Fi signal on the 3rd floor. Our analysis suggests replacing the router could resolve 85% of these complaints.
                 </p>
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="bg-orange-50 text-orange-700">MAINTENANCE</Badge>
+                  <Badge variant="outline" style={{ backgroundColor: `${colors.chart.orange}20`, color: colors.chart.orange, borderColor: `${colors.chart.orange}40` }}>MAINTENANCE</Badge>
                   <button className="text-sm text-primary font-medium">
                     Create Work Order
                   </button>
@@ -257,7 +259,7 @@ const InsightsPage = () => {
                   Guest feedback shows increasing demand for vegetarian options. Adding 3-4 new vegetarian items could boost dining satisfaction scores by approximately 12%.
                 </p>
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="bg-green-50 text-green-700">FOOD & BEVERAGE</Badge>
+                  <Badge variant="outline" style={{ backgroundColor: `${colors.chart.green}20`, color: colors.chart.green, borderColor: `${colors.chart.green}40` }}>FOOD & BEVERAGE</Badge>
                   <button className="text-sm text-primary font-medium">
                     Review Suggestions
                   </button>

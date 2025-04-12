@@ -6,9 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FeedbackItem } from '@/data/mockData';
 import { formatDistanceToNow } from 'date-fns';
-import { MessageSquare, MessageCircleHeart, MessageCircleWarning, MessageCircleX } from 'lucide-react';
+import { MessageSquare, MessageCircleHeart, MessageCircleWarning, MessageCircleX, Image, Video, Mic } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '@/styles/theme';
 
 interface FeedbackItemCardProps {
   feedback: FeedbackItem;
@@ -27,6 +28,16 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
     negative: 'bg-red-50 text-red-700 border-red-200'
   };
 
+  const mediaTypeIcons = {
+    text: <MessageSquare className="h-4 w-4 text-gray-500" />,
+    image: <Image className="h-4 w-4 text-indigo-500" />,
+    voice: <Mic className="h-4 w-4 text-amber-500" />,
+    video: <Video className="h-4 w-4 text-pink-500" />
+  };
+
+  // Determine the media type (defaulting to text if not specified)
+  const mediaType = feedback.mediaType || 'text';
+
   const getInitials = (name: string): string => {
     // Safely handle undefined or empty names
     if (!name || name.trim() === '') return 'AN';
@@ -41,6 +52,47 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
       .filter(Boolean)
       .join('')
       .slice(0, 2) || 'AN';
+  };
+
+  // Handle rendering media content based on type
+  const renderMediaContent = () => {
+    if (!feedback.mediaUrl) return null;
+    
+    switch (mediaType) {
+      case 'image':
+        return (
+          <div className="mt-2 rounded-md overflow-hidden">
+            <img 
+              src={feedback.mediaUrl} 
+              alt="Feedback image" 
+              className="w-full h-auto max-h-44 object-cover rounded-md"
+            />
+          </div>
+        );
+      case 'video':
+        return (
+          <div className="mt-2 rounded-md overflow-hidden">
+            <video 
+              controls 
+              className="w-full h-auto max-h-44 object-cover rounded-md"
+            >
+              <source src={feedback.mediaUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        );
+      case 'voice':
+        return (
+          <div className="mt-2">
+            <audio controls className="w-full">
+              <source src={feedback.mediaUrl} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -73,7 +125,17 @@ const FeedbackItemCard: React.FC<FeedbackItemCardProps> = ({ feedback }) => {
             </div>
           </div>
           <p className="text-sm text-muted-foreground mb-2">{feedback.message}</p>
+          
+          {/* Render any media content */}
+          {renderMediaContent()}
+          
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            {mediaType !== 'text' && (
+              <Badge variant="outline" className="text-xs flex items-center gap-1">
+                {mediaTypeIcons[mediaType as keyof typeof mediaTypeIcons]}
+                {mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}
+              </Badge>
+            )}
             {feedback.location && (
               <Badge variant="outline" className="text-xs">
                 {feedback.location}
@@ -129,10 +191,10 @@ const LiveFeedback: React.FC = () => {
               Positive <Badge className="ml-1 bg-green-500">{counts.positive}</Badge>
             </TabsTrigger>
             <TabsTrigger value="neutral">
-              Neutral <Badge className="ml-1 bg-blue-500">{counts.neutral}</Badge>
+              Neutral <Badge className="ml-1" style={{ backgroundColor: colors.chart.blue }}>{counts.neutral}</Badge>
             </TabsTrigger>
             <TabsTrigger value="negative">
-              Negative <Badge className="ml-1 bg-red-500">{counts.negative}</Badge>
+              Negative <Badge className="ml-1" style={{ backgroundColor: colors.primary.orange }}>{counts.negative}</Badge>
             </TabsTrigger>
           </TabsList>
           

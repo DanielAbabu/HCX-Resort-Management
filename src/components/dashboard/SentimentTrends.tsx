@@ -6,6 +6,7 @@ import { BarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, Cart
 import { BarChart3, ArrowUpIcon, ArrowDownIcon, Minus } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import { motion } from 'framer-motion';
+import { colors } from '@/styles/theme';
 
 const SentimentTrends: React.FC = () => {
   const { sentimentTrends } = useData();
@@ -120,16 +121,16 @@ const SentimentTrends: React.FC = () => {
                 >
                   <defs>
                     <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.chart.green} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.chart.green} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutral" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.chart.blue} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.chart.blue} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.primary.orange} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.primary.orange} stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
@@ -157,7 +158,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#000000" 
+                    stroke={colors.chart.green} 
                     fillOpacity={1}
                     fill="url(#colorPositive)" 
                     animationDuration={1000}
@@ -167,7 +168,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#525252" 
+                    stroke={colors.chart.blue} 
                     fillOpacity={1}
                     fill="url(#colorNeutral)" 
                     animationDuration={1200}
@@ -177,7 +178,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2} 
-                    stroke="#ef4444" 
+                    stroke={colors.primary.orange} 
                     fillOpacity={1}
                     fill="url(#colorNegative)" 
                     animationDuration={1400}
@@ -194,16 +195,16 @@ const SentimentTrends: React.FC = () => {
                 >
                   <defs>
                     <linearGradient id="colorPositiveWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#000000" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#000000" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.chart.green} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.chart.green} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNeutralWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#525252" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#525252" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.chart.blue} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.chart.blue} stopOpacity={0.1}/>
                     </linearGradient>
                     <linearGradient id="colorNegativeWeek" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor={colors.primary.orange} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors.primary.orange} stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
@@ -231,7 +232,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="positive" 
                     name="Positive" 
                     strokeWidth={2}
-                    stroke="#000000" 
+                    stroke={colors.chart.green} 
                     fillOpacity={1}
                     fill="url(#colorPositiveWeek)" 
                     animationDuration={1000}
@@ -241,7 +242,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="neutral" 
                     name="Neutral" 
                     strokeWidth={2}
-                    stroke="#525252" 
+                    stroke={colors.chart.blue} 
                     fillOpacity={1}
                     fill="url(#colorNeutralWeek)" 
                     animationDuration={1200}
@@ -251,7 +252,7 @@ const SentimentTrends: React.FC = () => {
                     dataKey="negative" 
                     name="Negative" 
                     strokeWidth={2}
-                    stroke="#ef4444" 
+                    stroke={colors.primary.orange} 
                     fillOpacity={1}
                     fill="url(#colorNegativeWeek)" 
                     animationDuration={1400}

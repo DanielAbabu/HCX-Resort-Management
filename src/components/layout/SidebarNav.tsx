@@ -6,8 +6,7 @@ import {
   Home, 
   MessageSquare, 
   ClipboardList, 
-  Lightbulb, 
-  Users
+  Lightbulb
 } from 'lucide-react';
 
 interface SidebarItemProps {
@@ -48,7 +47,6 @@ const SidebarNav: React.FC = () => {
     { title: 'Guest Feedback', href: '/feedback', icon: MessageSquare },
     { title: 'Service Requests', href: '/requests', icon: ClipboardList },
     { title: 'AI Insights', href: '/insights', icon: Lightbulb },
-    { title: 'Staff', href: '/staff', icon: Users },
   ];
 
   return (

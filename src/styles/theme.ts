@@ -14,6 +14,14 @@ export const colors = {
     900: '#171717', // Almost black
     1000: '#000000' // Pure black
   },
+  // Custom colors
+  primary: {
+    blue: '#0369a1',    // Primary blue
+    purple: '#8B5CF6',  // Vivid purple
+    teal: '#0EA5E9',    // Ocean blue
+    pink: '#D946EF',    // Magenta pink
+    orange: '#F97316',  // Bright orange
+  },
   // Status colors (using darker variations)
   status: {
     success: '#15803d', // Darker Green
@@ -26,6 +34,17 @@ export const colors = {
     positive: '#15803d', // Darker Green
     neutral: '#0369a1',  // Darker Blue
     negative: '#b91c1c', // Darker Red
+  },
+  // Chart colors
+  chart: {
+    blue: '#0EA5E9',     // Ocean blue
+    purple: '#8B5CF6',   // Vivid purple
+    pink: '#D946EF',     // Magenta pink
+    orange: '#F97316',   // Bright orange
+    green: '#4ade80',    // Soft green
+    teal: '#2dd4bf',     // Teal
+    indigo: '#818cf8',   // Indigo
+    yellow: '#fbbf24',   // Yellow
   }
 };
 
@@ -44,4 +63,7 @@ export const shadows = {
 export const gradients = {
   blackToGray: 'linear-gradient(to right, #000000, #404040)',
   grayCard: 'linear-gradient(to bottom right, #262626, #000000)',
+  blueToTeal: 'linear-gradient(to right, #0369a1, #0EA5E9)',
+  purpleToBlue: 'linear-gradient(to right, #8B5CF6, #0EA5E9)',
+  orangeToPink: 'linear-gradient(to right, #F97316, #D946EF)',
 };

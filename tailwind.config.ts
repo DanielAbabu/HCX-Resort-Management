@@ -80,6 +80,16 @@ export default {
           900: "#171717",
           950: "#0a0a0a",
         },
+        chart: {
+          blue: '#0EA5E9',     // Ocean blue
+          purple: '#8B5CF6',   // Vivid purple
+          pink: '#D946EF',     // Magenta pink
+          orange: '#F97316',   // Bright orange
+          green: '#4ade80',    // Soft green
+          teal: '#2dd4bf',     // Teal
+          indigo: '#818cf8',   // Indigo
+          yellow: '#fbbf24',   // Yellow
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -114,6 +124,36 @@ export default {
         "pulse-slow": "pulse-slow 3s ease-in-out infinite",
         "fade-in": "fade-in 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
+      },
+      backgroundOpacity: {
+        '5': '0.05',
+        '10': '0.1',
+        '15': '0.15',
+        '20': '0.2',
+        '25': '0.25',
+        '30': '0.3',
+        '40': '0.4',
+        '50': '0.5',
+        '60': '0.6',
+        '70': '0.7',
+        '80': '0.8',
+        '90': '0.9',
+        '95': '0.95',
+      },
+      borderOpacity: {
+        '5': '0.05',
+        '10': '0.1',
+        '15': '0.15',
+        '20': '0.2',
+        '25': '0.25',
+        '30': '0.3',
+        '40': '0.4',
+        '50': '0.5',
+        '60': '0.6',
+        '70': '0.7',
+        '80': '0.8',
+        '90': '0.9',
+        '95': '0.95',
       },
     },
   },
