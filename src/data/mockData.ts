@@ -2,6 +2,7 @@ export type Sentiment = 'positive' | 'neutral' | 'negative';
 export type RequestStatus = 'new' | 'in-progress' | 'resolved' | 'escalated';
 export type RequestType = 'cleaning' | 'complaint' | 'food' | 'maintenance' | 'amenities' | 'other';
 export type FeedbackSource = 'website';
+export type MediaType = 'text' | 'image' | 'voice' | 'video';
 
 export interface FeedbackItem {
   id: string;
@@ -11,6 +12,8 @@ export interface FeedbackItem {
   sentiment: Sentiment;
   source: FeedbackSource;
   location?: string;
+  mediaType?: MediaType;
+  mediaUrl?: string;
 }
 
 export interface ServiceRequest {
@@ -45,6 +48,7 @@ export interface SentimentTrend {
 const generateFeedback = (): FeedbackItem[] => {
   const sentiments: Sentiment[] = ['positive', 'neutral', 'negative'];
   const locations = ['Lobby', 'Restaurant', 'Pool', 'Room', 'Gym', 'Spa', null];
+  const mediaTypes: MediaType[] = ['text', 'image', 'voice', 'video'];
   const positiveMessages = [
     "The staff was incredibly helpful and friendly!",
     "Room service was quick and the food was delicious!",
@@ -107,6 +111,28 @@ const generateFeedback = (): FeedbackItem[] => {
     timestamp.setHours(timestamp.getHours() - hoursAgo);
     timestamp.setMinutes(timestamp.getMinutes() - minutesAgo);
 
+    const shouldHaveMedia = Math.random() < 0.3; // 30% chance to have media
+    let mediaType: MediaType | undefined = undefined;
+    let mediaUrl: string | undefined = undefined;
+    
+    if (shouldHaveMedia) {
+      const randomMediaTypeIndex = Math.floor(Math.random() * mediaTypes.length);
+      mediaType = mediaTypes[randomMediaTypeIndex];
+      
+      if (mediaType === 'image') {
+        const imageUrls = [
+          'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9',
+          'https://images.unsplash.com/photo-1721322800607-8c38375eef04',
+          'https://images.unsplash.com/photo-1582562124811-c09040d0a901'
+        ];
+        mediaUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+      } else if (mediaType === 'video') {
+        mediaUrl = 'https://example.com/video.mp4';
+      } else if (mediaType === 'voice') {
+        mediaUrl = 'https://example.com/audio.mp3';
+      }
+    }
+
     feedback.push({
       id: `fb-${i}`,
       timestamp,
@@ -114,7 +140,9 @@ const generateFeedback = (): FeedbackItem[] => {
       message,
       sentiment: sentimentType,
       source: 'website',
-      location: locations[Math.floor(Math.random() * locations.length)]
+      location: locations[Math.floor(Math.random() * locations.length)],
+      mediaType,
+      mediaUrl
     });
   }
 
